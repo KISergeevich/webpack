@@ -53,14 +53,7 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/,
-                use: [
-                {
-                    loader: MiniCssExtractPlugin.loader,
-                    options: {
-                        hrm: true,
-                        reloadAll: true
-                    },
-                },
+                use: [MiniCssExtractPlugin.loader,
                 {
                     loader: 'css-loader',
                     options: {
