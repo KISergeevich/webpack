@@ -11,13 +11,27 @@ const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 
 const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`
+const babelOptions = preset => {
+    const opts = {
+        presets: [
+            '@babel/preset-env',
+            
+        ]
+    }
+    if (preset) {
+        opts.presets.push(preset)
+    }
+
+    return opts
+}
+
 
 module.exports = {
     context: path.resolve(__dirname, 'src'),
     mode: 'development',
     entry: {
-        main: './index.js',
-        analytics: './analytics.js'
+        main: './index.jsx',
+        analytics: './analytics.ts'
     },
     output: {
         filename: filename('js'),
@@ -118,9 +132,23 @@ module.exports = {
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
+                    options: babelOptions()
+                }
+            },
+            {
+                test: /\.ts$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: babelOptions('@babel/preset-typescript')
+                }
+            },
+            {
+                test: /\.jsx$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: babelOptions('@babel/preset-react')
                 }
             }
         ]
