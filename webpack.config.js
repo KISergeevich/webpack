@@ -78,6 +78,26 @@ module.exports = {
                 ]
             },
             {
+                test: /\.less$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            esModule: false
+                        }
+                    },
+                    {
+                        loader: "less-loader",
+                        options: {
+                          lessOptions: {
+                            strictMath: true,
+                          },
+                        }
+                    }
+                ],
+            },
+            {
                 test: /\.(png|jpg|svg|gif)$/,
                 use: ['file-loader']
             },
@@ -94,18 +114,15 @@ module.exports = {
                 use: ['csv-loader']
             },
             {
-                test: /\.less$/i,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            esModule: false
-                        }
-                    },
-                  "less-loader",
-                ],
-              },
+                test: /\.m?js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }
+            }
         ]
     }
 };
